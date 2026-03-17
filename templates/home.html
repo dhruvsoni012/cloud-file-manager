@@ -1,0 +1,116 @@
+{% extends "layout.html" %}
+
+{% block title %}Home - Cloud File Manager{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">🏠 Welcome to Your Cloud</h1>
+</div>
+
+<!-- Search Bar -->
+<div class="search-section">
+    <form action="/search" method="GET" class="search-form">
+        <input 
+            type="text"
+            name="q"
+            class="search-input"
+            placeholder="🔍 Search files and folders across your entire drive..."
+            required
+        >
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+<!-- Stats Cards -->
+<div class="stats-grid">
+    <div class="stat-card">
+        <div class="stat-icon">📄</div>
+        <div class="stat-content">
+            <div class="stat-label">Total Files</div>
+            <div class="stat-value">{{ total_files }}</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon">📁</div>
+        <div class="stat-content">
+            <div class="stat-label">Total Folders</div>
+            <div class="stat-value">{{ total_folders }}</div>
+        </div>
+    </div>
+    
+    <div class="stat-card">
+        <div class="stat-icon">💾</div>
+        <div class="stat-content">
+            <div class="stat-label">Storage Used</div>
+            <div class="stat-value-small">{{ storage_used }}</div>
+            <div class="progress-bar">
+                <div class="progress-fill" style="width: {{ storage_percent }}%"></div>
+            </div>
+            <div class="stat-sublabel">{{ storage_percent }}% of {{ storage_quota }}</div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Access -->
+<div class="section">
+    <h2 class="section-title">Quick Access</h2>
+    <div class="quick-links">
+        <a href="/drive" class="quick-link">
+            <span class="quick-icon">📁</span>
+            <span>My Drive</span>
+        </a>
+        <a href="/trash" class="quick-link">
+            <span class="quick-icon">🗑️</span>
+            <span>Trash</span>
+        </a>
+        <a href="/storage" class="quick-link">
+            <span class="quick-icon">💾</span>
+            <span>Storage</span>
+        </a>
+        <a href="/profile" class="quick-link">
+            <span class="quick-icon">👤</span>
+            <span>Profile</span>
+        </a>
+    </div>
+</div>
+
+<!-- Recent Files -->
+<div class="section">
+    <h2 class="section-title">Recent Files</h2>
+    
+    {% if recent_files %}
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Folder</th>
+                    <th>Size</th>
+                    <th>Uploaded</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in recent_files %}
+                <tr>
+                    <td>📄 {{ file.name }}</td>
+                    <td>{{ file.folder }}</td>
+                    <td>{{ file.size }}</td>
+                    <td>{{ file.uploaded }}</td>
+                    <td>
+                        <a href="/download/{{ file.id }}" class="btn btn-small btn-primary">Download</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">📂</div>
+        <p>No recent files</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

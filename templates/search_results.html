@@ -1,0 +1,71 @@
+{% extends "layout.html" %}
+
+{% block title %}Search Results - Cloud File Manager{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">🔍 Search Results</h1>
+</div>
+
+<div class="search-section">
+    <form action="/search" method="GET" class="search-form">
+        <input 
+            type="text"
+            name="q"
+            class="search-input"
+            placeholder="Search files and folders..."
+            value="{{ query }}"
+            required
+        >
+        <button type="submit" class="btn btn-primary">Search</button>
+    </form>
+</div>
+
+{% if query %}
+<p class="search-info">Showing results for: <strong>"{{ query }}"</strong></p>
+
+{% if results %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Location</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in results %}
+            <tr>
+                <td>
+                    {% if item.type == 'folder' %}
+                        📁 Folder
+                    {% else %}
+                        📄 File
+                    {% endif %}
+                </td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.location }}</td>
+                <td>
+                    <a href="/drive/{{ item.folder_id }}" class="btn btn-small btn-secondary">Open Location</a>
+                    {% if item.type == 'file' %}
+                    <a href="/download/{{ item.id }}" class="btn btn-small btn-primary">Download</a>
+                    {% endif %}
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+
+<p class="results-count">Found {{ results|length }} result(s)</p>
+{% else %}
+<div class="empty-state">
+    <div class="empty-icon">🔍</div>
+    <p>No results found</p>
+    <p class="empty-hint">Try a different search term</p>
+</div>
+{% endif %}
+{% endif %}
+{% endblock %}

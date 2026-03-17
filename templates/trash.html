@@ -1,0 +1,78 @@
+{% extends "layout.html" %}
+
+{% block title %}Trash - Cloud File Manager{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">🗑️ Trash</h1>
+    {% if items %}
+    <button onclick="emptyTrash()" class="btn btn-danger">Empty Trash</button>
+    {% endif %}
+</div>
+
+<div class="alert alert-info">
+    ℹ️ Items in trash will be automatically deleted after their expiration date.
+</div>
+
+{% if items %}
+<div class="table-container">
+    <table class="data-table">
+        <thead>
+            <tr>
+                <th>Type</th>
+                <th>Name</th>
+                <th>Size</th>
+                <th>Deleted On</th>
+                <th>Auto Delete On</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in items %}
+            <tr>
+                <td>
+                    {% if item.type == 'folder' %}
+                        📁 Folder
+                    {% else %}
+                        📄 File
+                    {% endif %}
+                </td>
+                <td>{{ item.name }}</td>
+                <td>{{ item.size }}</td>
+                <td>{{ item.deleted_at }}</td>
+                <td>{{ item.auto_delete_at }}</td>
+                <td>
+                    <form method="POST" action="/trash/restore/{{ item.trash_id }}" style="display: inline;">
+                        <button type="submit" class="btn btn-small btn-primary">Restore</button>
+                    </form>
+                    <form method="POST" action="/trash/delete/{{ item.trash_id }}" style="display: inline;" onsubmit="return confirm('Permanently delete this item? This cannot be undone!');">
+                        <button type="submit" class="btn btn-small btn-danger">Delete Forever</button>
+                    </form>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% else %}
+<div class="empty-state">
+    <div class="empty-icon">🗑️</div>
+    <p>Trash is empty</p>
+    <p class="empty-hint">Deleted files and folders will appear here</p>
+</div>
+{% endif %}
+
+<script>
+function emptyTrash() {
+    if (!confirm('Are you sure you want to permanently delete ALL items in trash? This cannot be undone!')) {
+        return;
+    }
+    
+    const form = document.createElement('form');
+    form.method = 'POST';
+    form.action = '/trash/empty';
+    document.body.appendChild(form);
+    form.submit();
+}
+</script>
+{% endblock %}

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sign Up | Cloud File Manager</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body class="auth-page" data-theme="dark">
+    <div class="auth-container">
+        <div class="auth-card">
+            <div class="auth-header">
+                <h1 class="auth-logo">☁️ Create Account</h1>
+                <p class="auth-subtitle">Join the secure cloud storage</p>
+            </div>
+            
+            <div class="alert alert-warning">
+                ⚠️ Important: If you forget your password, your encrypted data cannot be recovered.
+            </div>
+
+            {% if error %}
+            <div class="alert alert-error">{{ error }}</div>
+            {% endif %}
+
+            <form method="post" class="auth-form">
+                <div class="form-group">
+                    <label class="form-label">Username</label>
+                    <input 
+                        type="text" 
+                        name="username" 
+                        class="form-input" 
+                        placeholder="Choose a username"
+                        required
+                        autocomplete="username">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Email (optional)</label>
+                    <input 
+                        type="email" 
+                        name="email" 
+                        class="form-input" 
+                        placeholder="your@email.com"
+                        autocomplete="email">
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Mobile Number (optional)</label>
+                    <input 
+                        type="tel" 
+                        name="mobile" 
+                        class="form-input" 
+                        placeholder="+1234567890"
+                        autocomplete="tel">
+                    <small class="form-help">At least one contact method (email or mobile) is required</small>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Password</label>
+                    <input 
+                        type="password" 
+                        name="password" 
+                        id="password"
+                        class="form-input" 
+                        placeholder="Create a strong password"
+                        required
+                        autocomplete="new-password">
+                    
+                    <ul class="password-requirements">
+                        <li id="req-length">✓ At least 8 characters</li>
+                        <li id="req-uppercase">✓ One uppercase letter</li>
+                        <li id="req-lowercase">✓ One lowercase letter</li>
+                        <li id="req-number">✓ One number</li>
+                    </ul>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">
+                    Create Account
+                </button>
+            </form>
+
+            <div class="auth-footer">
+                Already have an account? <a href="/login">Login</a>
+            </div>
+        </div>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>

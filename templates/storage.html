@@ -1,0 +1,60 @@
+{% extends "layout.html" %}
+
+{% block title %}Storage - Cloud File Manager{% endblock %}
+
+{% block content %}
+<div class="page-header">
+    <h1 class="page-title">💾 Storage Management</h1>
+</div>
+
+<!-- Storage Overview -->
+<div class="card">
+    <h3 class="card-title">Storage Overview</h3>
+    <div class="storage-overview">
+        <div class="storage-stats-large">
+            <div class="storage-used-large">{{ used }}</div>
+            <div class="storage-quota-large">of {{ quota }}</div>
+        </div>
+        <div class="progress-bar-large">
+            <div class="progress-fill" style="width: {{ percent }}%"></div>
+        </div>
+        <div class="storage-percent-large">{{ percent }}% used</div>
+    </div>
+</div>
+
+<!-- Largest Files -->
+<div class="card" style="margin-top: 2rem;">
+    <h3 class="card-title">Largest Files</h3>
+    
+    {% if largest %}
+    <div class="table-container">
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Name</th>
+                    <th>Size</th>
+                    <th>Actions</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for file in largest %}
+                <tr>
+                    <td>📄 {{ file.name }}</td>
+                    <td>{{ file.size }}</td>
+                    <td>
+                        <a href="/drive/{{ file.folder_id }}" class="btn btn-small btn-secondary">Open Location</a>
+                        <a href="/download/{{ file.id }}" class="btn btn-small btn-primary">Download</a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    {% else %}
+    <div class="empty-state">
+        <div class="empty-icon">📄</div>
+        <p>No files yet</p>
+    </div>
+    {% endif %}
+</div>
+{% endblock %}

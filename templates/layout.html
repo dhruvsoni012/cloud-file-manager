@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="{{ theme or 'dark' }}">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Cloud File Manager{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="app-container">
+        <!-- Sidebar -->
+        <aside class="sidebar">
+            <div class="sidebar-header">
+                <h1 class="logo">☁️ Cloud</h1>
+            </div>
+            
+            <nav class="sidebar-nav">
+                <a href="/" class="nav-item {% if request.path == '/' %}active{% endif %}">
+                    <span class="nav-icon">🏠</span>
+                    <span class="nav-text">Home</span>
+                </a>
+                
+                <a href="/drive" class="nav-item {% if '/drive' in request.path %}active{% endif %}">
+                    <span class="nav-icon">📁</span>
+                    <span class="nav-text">My Drive</span>
+                </a>
+                
+                <a href="/storage" class="nav-item {% if request.path == '/storage' %}active{% endif %}">
+                    <span class="nav-icon">💾</span>
+                    <span class="nav-text">Storage</span>
+                </a>
+                
+                <a href="/trash" class="nav-item {% if request.path == '/trash' %}active{% endif %}">
+                    <span class="nav-icon">🗑️</span>
+                    <span class="nav-text">Trash</span>
+                </a>
+                
+                <a href="/profile" class="nav-item {% if request.path == '/profile' %}active{% endif %}">
+                    <span class="nav-icon">👤</span>
+                    <span class="nav-text">Profile</span>
+                </a>
+                
+                <a href="/settings" class="nav-item {% if request.path == '/settings' %}active{% endif %}">
+                    <span class="nav-icon">⚙️</span>
+                    <span class="nav-text">Settings</span>
+                </a>
+                
+                {% if session.get('is_admin') %}
+                <a href="/admin" class="nav-item {% if request.path == '/admin' %}active{% endif %}">
+                    <span class="nav-icon">👑</span>
+                    <span class="nav-text">Admin</span>
+                </a>
+                {% endif %}
+            </nav>
+            
+            <div class="sidebar-footer">
+                <a href="/logout" class="nav-item logout">
+                    <span class="nav-icon">🚪</span>
+                    <span class="nav-text">Logout</span>
+                </a>
+            </div>
+        </aside>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <div class="content-wrapper">
+                {% block content %}{% endblock %}
+            </div>
+        </main>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast"></div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
